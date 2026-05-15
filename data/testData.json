@@ -1,0 +1,150 @@
+{
+  "login": {
+    "invalidEmails": {
+      "missingAt": "invalidemail",
+      "missingLocalPart": "@example.com",
+      "missingDomain": "user@"
+    },
+    "validEmailFormats": [
+      "user.name@example.com",
+      "user+tag@example.co.jp",
+      "user_name@sub.example.org"
+    ],
+    "uppercaseEmail": "REACHARAVINDH.S14@GMAIL.COM",
+    "emailWithSpaces": "  reacharavindh.s14@gmail.com  ",
+    "specialCharPassword": "P@ssw0rd!#$%^&*()",
+    "longPassword": "AbcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?/~`"
+  },
+  "routes": {
+    "login": "/",
+    "dashboard": "/mypage",
+    "forgotPassword": "/forgot-password",
+    "register": "/register",
+    "protectedVehicle": "/mypage/vehicle",
+    "settings": "/mypage/settings"
+  },
+  "messages": {
+    "emailRequired": "メールアドレスを入力してください",
+    "passwordRequired": "パスワードを入力してください。",
+    "invalidEmailFormat": "メールアドレスの形式が正しくありません",
+    "invalidCredentials": "メールアドレスまたはパスワードが正しくありません。"
+  },
+  "ui": {
+    "loginHeading": "ログイン",
+    "welcomeHeading": "ようこそ",
+    "forgotPasswordHeading": "パスワードをお忘れですか",
+    "registerLinkText": "新規会員登録",
+    "forgotPasswordLinkText": "パスワードを忘れた方",
+    "loginButtonText": "ログイン",
+    "logoutMenuText": "ログアウト",
+    "dashboardGreetingPrefix": "こんにちは"
+  },
+  "registration": {
+    "validPassword": "Password@123",
+    "passwords": {
+      "tooShort": "Pass1A!",
+      "noUppercase": "password1!",
+      "noLowercase": "PASSWORD1!",
+      "noDigit": "Password!",
+      "noSpecial": "Password1a",
+      "mismatchCase": "PassworD@123"
+    },
+    "defaults": {
+      "firstName": "太郎",
+      "lastName": "山田",
+      "birthYear": "1990",
+      "birthMonth": "5",
+      "birthDay": "15",
+      "gender": "男性",
+      "phone": "090-1234-5678",
+      "phoneInternational": "+81-90-1234-5678",
+      "postalCode": "150-0001",
+      "postalCodeInvalid": "999-9999",
+      "prefecture": "東京都",
+      "municipality": "渋谷区",
+      "streetAddress": "1-2-3",
+      "buildingName": "テストビル101",
+      "japaneseFirstName": "たろう",
+      "japaneseLastName": "ヤマダ",
+      "japaneseMunicipality": "渋谷区",
+      "japaneseStreet": "神宮前一丁目"
+    },
+    "messages": {
+      "successHeading": "確認メールを送信しました",
+      "successBodySnippet": "登録用のメールを送信しました",
+      "firstNameRequired": "名を入力してください",
+      "lastNameRequired": "姓を入力してください",
+      "birthYearRequired": "生年を選択してください",
+      "birthDayRequired": "生日を選択してください",
+      "genderRequired": "いずれかを選択してください",
+      "emailRequired": "メールアドレスを入力してください",
+      "emailInvalid": "メールアドレスの形式が正しくありません",
+      "emailDuplicate": "メールアドレスは既に登録されています",
+      "phoneRequired": "電話番号を入力してください",
+      "postalRequired": "郵便番号を入力してください",
+      "municipalityRequired": "市区町村を入力してください",
+      "streetRequired": "番地を入力してください",
+      "prefectureRequired": "都道府県を選択してください",
+      "passwordRequired": "パスワードを入力してください。",
+      "confirmPasswordRequired": "パスワードを再入力してください。",
+      "passwordMismatch": "パスワードが一致しません",
+      "termsRequired": "利用規約に同意してください",
+      "postalLookupFailure": "住所の取得に失敗しました。郵便番号をご確認ください。",
+      "emailHelper": "ログインIDとして使用されます"
+    },
+    "passwordRules": {
+      "minLength": "8文字以上",
+      "lowercase": "英小文字を含む",
+      "uppercase": "英大文字を含む",
+      "digit": "数字を含む",
+      "special": "特殊文字を含める必要があります"
+    },
+    "limits": {
+      "firstName": 25,
+      "lastName": 25,
+      "phone": 15,
+      "postalCode": 50,
+      "municipality": 50,
+      "streetAddress": 255,
+      "buildingName": 50,
+      "password": 20
+    },
+    "ui": {
+      "submitButton": "会員登録する",
+      "postalLookupButton": "住所読込",
+      "headerLoginLink": "ログインはこちら",
+      "footerLoginLink": "ログイン",
+      "termsLink": "利用規約",
+      "privacyLink": "プライバシーポリシー"
+    }
+  },
+  "changePassword": {
+    "passwords": {
+      "alternateA": "NewPass@456",
+      "alternateB": "NewPass@789",
+      "alternateC": "NewPass@111",
+      "wrongCurrent": "WrongPass@999",
+      "tooShort": "Pass1A!",
+      "noUppercase": "password1!",
+      "noLowercase": "PASSWORD1!",
+      "noDigit": "Password!",
+      "noSpecial": "Password1a",
+      "mismatchConfirm": "Different@123"
+    },
+    "messages": {
+      "success": "パスワードを変更しました",
+      "currentRequired": "現在のパスワードを入力してください。",
+      "currentIncorrect": "現在のパスワードが正しくありません",
+      "newRequired": "パスワードを入力してください。",
+      "confirmRequired": "パスワードを再入力してください。",
+      "mismatch": "パスワードが一致しません",
+      "sameAsCurrent": "以前使用したパスワードは利用できません"
+    },
+    "ui": {
+      "modalHeading": "パスワードを変更",
+      "menuItem": "パスワードを変更",
+      "saveButton": "保存",
+      "cancelButton": "キャンセル"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "mobipark-member-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:login": "playwright test tests/login.spec.ts",
+    "test:registration": "playwright test tests/registration.spec.ts",
+    "test:change-password": "playwright test tests/changePassword.spec.ts",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:report": "npm run allure:generate && npm run allure:open"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.3",
+    "allure-commandline": "^2.34.0",
+    "allure-playwright": "^3.2.2",
+    "dotenv": "^16.5.0",
+    "typescript": "^5.8.3"
+  }
+}
