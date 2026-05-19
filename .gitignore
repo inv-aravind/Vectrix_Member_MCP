@@ -16,8 +16,9 @@ blob-report/
 allure-results/
 allure-report/
 
-# Local runtime state (e.g. change-password password tracker)
+# Local runtime state (e.g. change-password password tracker, profile baseline)
 .runtime/
+profile-state.json
 
 # Playwright MCP / agent local caches (if created under repo root)
 .playwright-mcp/

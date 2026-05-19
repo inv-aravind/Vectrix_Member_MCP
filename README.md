@@ -2,7 +2,7 @@
 
 End-to-end UI automation for the **Mobipark Member Site** using Playwright, TypeScript, and the Page Object Model (POM). Test cases are derived from manual test documents under `TestCases/` and implemented according to `.cursor/rules.md`.
 
-**Last updated:** 2026-05-14
+**Last updated:** 2026-05-18
 
 ---
 
@@ -13,13 +13,15 @@ End-to-end UI automation for the **Mobipark Member Site** using Playwright, Type
 ├── .cursor/
 │   └── rules.md                 # Automation rules (POM, MCP, fixtures, README policy)
 ├── .runtime/
-│   └── password-state.json      # Live password tracker (gitignored; change-password suite)
+│   ├── password-state.json      # Live password tracker (gitignored; change-password suite)
+│   └── profile-state.json       # Profile baseline (gitignored; account-settings suite)
 ├── Credentials/
 │   └── credetials.md            # Reference credentials (not used at runtime)
 ├── TestCases/
 │   ├── LoginTestCases.md        # Login module manual test cases (42)
 │   ├── Registration_TestCases.md # Registration module manual test cases (68)
-│   └── ChangePassword_TestCases.md # Change password module (26)
+│   ├── ChangePassword_TestCases.md # Change password module (26)
+│   └── Account_settings_TestCases.md # Account settings module (36)
 ├── data/
 │   └── testData.json            # Shared test data, routes, UI messages
 ├── fixtures/
@@ -29,14 +31,17 @@ End-to-end UI automation for the **Mobipark Member Site** using Playwright, Type
 │   ├── Dashboard.page.ts
 │   ├── ForgotPassword.page.ts
 │   ├── Register.page.ts
-│   └── ChangePassword.page.ts
+│   ├── ChangePassword.page.ts
+│   └── AccountSettings.page.ts
 ├── tests/
 │   ├── login.spec.ts            # Login module (TC_001–TC_042)
 │   ├── registration.spec.ts     # Registration module (TC_001–TC_068)
-│   └── changePassword.spec.ts   # Change password (TC_001–TC_026 + TC_REVERT)
+│   ├── changePassword.spec.ts   # Change password (TC_001–TC_026 + TC_REVERT)
+│   └── accountSettings.spec.ts  # Account settings (TC_001–TC_036 + TC_REVERT)
 ├── utils/
 │   ├── registrationEmail.ts     # Unique registration email builder
-│   └── passwordState.ts         # Persists latest account password between tests
+│   ├── passwordState.ts         # Persists latest account password between tests
+│   └── profileState.ts          # Persists profile baseline for account-settings revert
 ├── playwright.config.ts
 ├── tsconfig.json
 ├── package.json
@@ -107,6 +112,8 @@ Registration emails use: `{REGISTRATION_EMAIL_LOCAL_PART}+{timestamp}@{REGISTRAT
 
 Change-password tests track the live account password in `.runtime/password-state.json` via `getCurrentPassword()` / `setCurrentPassword()` in `utils/passwordState.ts`. If a run fails mid-suite, read that file to see the last known password.
 
+Account-settings tests capture the signed-in profile in `.runtime/profile-state.json` during TC_001 and restore it in **`TC_REVERT`** via `utils/profileState.ts`.
+
 ---
 
 ## Running tests
@@ -117,6 +124,7 @@ Change-password tests track the live account password in `.runtime/password-stat
 | `npm run test:login` | Login module only |
 | `npm run test:registration` | Registration module only |
 | `npm run test:change-password` | Change password module only |
+| `npm run test:account-settings` | Account settings module only |
 | `npm run test:headed` | Run with visible browser |
 | `npm run test:report` | Open Playwright HTML report |
 | `npm run allure:generate` | Generate Allure HTML from `allure-results/` |
@@ -165,6 +173,20 @@ After any test run, raw Allure data is written to `allure-results/`. Generate a 
 
 **Last run summary (change password):** 27 passed (includes TC_REVERT)
 
+### Account Settings (`tests/accountSettings.spec.ts`)
+
+| Module | Cases | Source |
+|--------|-------|--------|
+| Account Settings | 36 + TC_REVERT | `TestCases/Account_settings_TestCases.md` |
+
+- Route: `/mypage/settings` — view/edit pattern with `編集` / `保存` / `キャンセル`
+- TC_001 writes baseline profile to `.runtime/profile-state.json`
+- **`TC_REVERT`** restores the baseline profile when the suite mutates account data
+
+**Skipped:**
+
+- TC_033 – requires known registration payload for the signed-in account
+
 ---
 
 ## Conventions
@@ -175,6 +197,7 @@ After any test run, raw Allure data is written to `allure-results/`. Generate a 
 - Read secrets and URLs from `.env`; use `data/testData.json` for `{{key}}` test data.
 - Registration tests must use `buildRegistrationEmail()` for email fields (see `.cursor/rules.md`).
 - Change-password tests must use `getCurrentPassword()` and `setCurrentPassword()` (see `.cursor/rules.md`).
+- Account-settings tests must capture baseline in TC_001 and end with `TC_REVERT` (see `.cursor/rules.md`).
 
 ---
 
@@ -188,6 +211,7 @@ After any test run, raw Allure data is written to `allure-results/`. Generate a 
 | Failure screenshots / video | `test-results/` |
 | MCP inspection snapshots | `.playwright-mcp/` (gitignored) |
 | Password state (runtime) | `.runtime/password-state.json` (gitignored) |
+| Profile baseline (runtime) | `.runtime/profile-state.json` (gitignored) |
 
 ---
 

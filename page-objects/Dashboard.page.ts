@@ -8,6 +8,9 @@ export class DashboardPage {
   readonly logoutMenuItem: Locator;
   readonly changePasswordMenuItem: Locator;
   readonly memberInfoSection: Locator;
+  readonly memberNameValue: Locator;
+  readonly memberEmailValue: Locator;
+  readonly accountSettingsLink: Locator;
   readonly vehicleRegistrationLink: Locator;
 
   constructor(page: Page) {
@@ -17,6 +20,9 @@ export class DashboardPage {
     this.logoutMenuItem = page.getByRole('menuitem', { name: testData.ui.logoutMenuText });
     this.changePasswordMenuItem = page.getByRole('menuitem', { name: testData.changePassword.ui.menuItem });
     this.memberInfoSection = page.getByText('会員情報', { exact: true });
+    this.memberNameValue = page.locator("//p[text()='お名前']/following-sibling::p[1]");
+    this.memberEmailValue = page.locator("//p[text()='メールアドレス']/following-sibling::p[1]");
+    this.accountSettingsLink = page.getByRole('link', { name: 'アカウント設定' }).first();
     this.vehicleRegistrationLink = page.getByRole('link', { name: /車両登録/ });
   }
 
@@ -48,5 +54,18 @@ export class DashboardPage {
   async expectProtectedContentAccessible(): Promise<void> {
     await expect(this.page).toHaveURL(new RegExp(testData.routes.protectedVehicle));
     await expect(this.page).not.toHaveURL(new RegExp(`${testData.routes.login}$`));
+  }
+
+  async expectMemberNameContains(firstName: string, lastName: string): Promise<void> {
+    await expect(this.memberNameValue).toContainText(firstName);
+    await expect(this.memberNameValue).toContainText(lastName);
+  }
+
+  async expectMemberEmail(email: string): Promise<void> {
+    await expect(this.memberEmailValue).toHaveText(email);
+  }
+
+  async expectGreetingContains(firstName: string): Promise<void> {
+    await expect(this.greetingHeading).toContainText(firstName);
   }
 }

@@ -5,6 +5,7 @@ import { ForgotPasswordPage } from '../page-objects/ForgotPassword.page';
 import { RegisterPage } from '../page-objects/Register.page';
 
 import { ChangePasswordPage } from '../page-objects/ChangePassword.page';
+import { AccountSettingsPage } from '../page-objects/AccountSettings.page';
 
 type MyFixtures = {
   loginPage: LoginPage;
@@ -12,6 +13,7 @@ type MyFixtures = {
   forgotPasswordPage: ForgotPasswordPage;
   registerPage: RegisterPage;
   changePasswordPage: ChangePasswordPage;
+  accountSettingsPage: AccountSettingsPage;
 };
 
 export const test = base.extend<MyFixtures>({
@@ -29,6 +31,9 @@ export const test = base.extend<MyFixtures>({
   },
   changePasswordPage: async ({ page }, use) => {
     await use(new ChangePasswordPage(page));
+  },
+  accountSettingsPage: async ({ page }, use) => {
+    await use(new AccountSettingsPage(page));
   },
 });
 

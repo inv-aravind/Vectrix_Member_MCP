@@ -146,5 +146,39 @@
       "saveButton": "保存",
       "cancelButton": "キャンセル"
     }
+  },
+  "accountSettings": {
+    "limits": {
+      "firstName": 25,
+      "lastName": 25,
+      "phone": 15,
+      "postalCode": 50,
+      "municipality": 50,
+      "streetAddress": 255,
+      "buildingName": 50
+    },
+    "patterns": {
+      "membershipNumber": "^MP-\\d{4}-\\d{5}$"
+    },
+    "messages": {
+      "success": "アカウント設定を更新しました",
+      "firstNameRequired": "名を入力してください",
+      "lastNameRequired": "姓を入力してください",
+      "genderRequired": "いずれかを選択してください",
+      "birthDayRequired": "生日を選択してください",
+      "phoneRequired": "電話番号を入力してください",
+      "prefectureRequired": "都道府県を選択してください"
+    },
+    "ui": {
+      "pageHeading": "アカウント設定",
+      "memberInfoSection": "会員情報入力",
+      "otherInfoSection": "その他の情報",
+      "editButton": "編集",
+      "saveButton": "保存",
+      "cancelButton": "キャンセル",
+      "returnToMyPageLink": "マイページへ戻る",
+      "membershipNumberLabel": "会員番号",
+      "membershipDateLabel": "会員登録日"
+    }
   }
 }

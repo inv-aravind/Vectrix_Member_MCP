@@ -1,0 +1,112 @@
+name: Scheduled Playwright Tests
+
+on:
+  schedule:
+    # Daily at 02:00 UTC — adjust in CronJob/README.md
+    # - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Git branch to run (latest commit). Leave empty to use CRON_TARGET_BRANCH or default branch.'
+        required: false
+        type: string
+      test_command:
+        description: 'npm script to run'
+        required: false
+        default: test
+        type: choice
+        options:
+          - test
+          - test:login
+          - test:registration
+          - test:change-password
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cron-playwright-${{ github.workflow }}-${{ github.event.inputs.branch || vars.CRON_TARGET_BRANCH || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright (${{ github.event.inputs.branch || vars.CRON_TARGET_BRANCH || github.ref_name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Resolve target branch
+        id: target
+        shell: bash
+        run: |
+          BRANCH="${{ github.event.inputs.branch || vars.CRON_TARGET_BRANCH || github.ref_name }}"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "Running tests against branch: $BRANCH"
+
+      - name: Checkout latest code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.target.outputs.branch }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Run Playwright tests
+        env:
+          CI: true
+          BASE_URL: ${{ secrets.BASE_URL }}
+          BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
+          BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+          VALID_EMAIL: ${{ secrets.VALID_EMAIL }}
+          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+          UNREGISTERED_EMAIL: ${{ secrets.UNREGISTERED_EMAIL }}
+          INVALID_PASSWORD: ${{ secrets.INVALID_PASSWORD }}
+          NON_ACTIVATED_EMAIL: ${{ secrets.NON_ACTIVATED_EMAIL }}
+          NON_ACTIVATED_PASSWORD: ${{ secrets.NON_ACTIVATED_PASSWORD }}
+          REGISTRATION_EMAIL_LOCAL_PART: ${{ secrets.REGISTRATION_EMAIL_LOCAL_PART }}
+          REGISTRATION_EMAIL_DOMAIN: ${{ secrets.REGISTRATION_EMAIL_DOMAIN }}
+          REGISTRATION_PASSWORD: ${{ secrets.REGISTRATION_PASSWORD }}
+          CHANGE_PASSWORD_ALT_A: ${{ secrets.CHANGE_PASSWORD_ALT_A }}
+          CHANGE_PASSWORD_ALT_B: ${{ secrets.CHANGE_PASSWORD_ALT_B }}
+          CHANGE_PASSWORD_ALT_C: ${{ secrets.CHANGE_PASSWORD_ALT_C }}
+        run: npm run ${{ github.event.inputs.test_command || 'test' }}
+
+      - name: Generate Allure report
+        if: always()
+        run: npm run allure:generate
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          path: allure-report/
+          retention-days: 14
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          path: |
+            test-results/
+            allure-results/
+          retention-days: 14

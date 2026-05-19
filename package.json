@@ -7,6 +7,7 @@
     "test:login": "playwright test tests/login.spec.ts",
     "test:registration": "playwright test tests/registration.spec.ts",
     "test:change-password": "playwright test tests/changePassword.spec.ts",
+    "test:account-settings": "playwright test tests/accountSettings.spec.ts",
     "test:headed": "playwright test --headed",
     "test:report": "playwright show-report",
     "allure:generate": "allure generate allure-results --clean -o allure-report",

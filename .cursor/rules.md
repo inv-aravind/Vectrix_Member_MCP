@@ -37,6 +37,17 @@ For **every** registration test case that fills the Email Address field:
 * For negative/validation cases that still require a syntactically valid email, use the same timestamped format unless the case explicitly requires a fixed duplicate (e.g. already-registered email from `.env`).
 * Never reuse a static registration email across tests in the same suite run.
 
+## Account Settings Profile Baseline (Mandatory)
+
+For the **Account Settings** module:
+
+* Capture the signed-in member profile in `.runtime/profile-state.json` via `utils/profileState.ts` during **TC_001** (`writeProfileBaseline()`).
+* Tests that mutate profile data run serially; **`TC_REVERT`** MUST run last and restore the baseline with `AccountSettingsPage.restoreProfile()` when values differ.
+* Use `getCurrentPassword()` for login (password may differ from `.env` after change-password runs).
+* Document the state file path in `README.md`; never commit `.runtime/`.
+
+---
+
 ## Change Password State Tracking (Mandatory)
 
 For the **Change Password** module:
