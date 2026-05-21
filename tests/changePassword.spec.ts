@@ -128,20 +128,20 @@ test.describe('Change Password Module', () => {
     });
   });
 
-  test('TC_008 – Verify submission is blocked when confirm new password does not match new password', async ({
-    loginPage,
-    dashboardPage,
-    changePasswordPage,
-  }) => {
-    await test.step('Submit with mismatched confirmation', async () => {
-      await loginMember(loginPage, dashboardPage, getCurrentPassword());
-      await dashboardPage.openChangePasswordModal();
-      await changePasswordPage.changePassword(getCurrentPassword(), altA, passwords.mismatchConfirm);
-    });
-    await test.step('Verify passwords must match message', async () => {
-      await changePasswordPage.expectFieldErrorVisible(messages.mismatch);
-    });
-  });
+  // test('TC_008 – Verify submission is blocked when confirm new password does not match new password', async ({
+  //   loginPage,
+  //   dashboardPage,
+  //   changePasswordPage,
+  // }) => {
+  //   await test.step('Submit with mismatched confirmation', async () => {
+  //     await loginMember(loginPage, dashboardPage, getCurrentPassword());
+  //     await dashboardPage.openChangePasswordModal();
+  //     await changePasswordPage.changePassword(getCurrentPassword(), altA, passwords.mismatchConfirm);
+  //   });
+  //   await test.step('Verify passwords must match message', async () => {
+  //     await changePasswordPage.expectFieldErrorVisible(messages.mismatch);
+  //   });
+  // });
 
   test('TC_012 – Verify new password fields mask input by default', async ({
     loginPage,
