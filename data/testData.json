@@ -21,7 +21,8 @@
     "forgotPassword": "/forgot-password",
     "register": "/register",
     "protectedVehicle": "/mypage/vehicle",
-    "settings": "/mypage/settings"
+    "settings": "/mypage/settings",
+    "contact": "/mypage/contact"
   },
   "messages": {
     "emailRequired": "メールアドレスを入力してください",
@@ -179,6 +180,202 @@
       "returnToMyPageLink": "マイページへ戻る",
       "membershipNumberLabel": "会員番号",
       "membershipDateLabel": "会員登録日"
+    }
+  },
+  "dashboard": {
+    "patterns": {
+      "membershipNumber": "^MP-\\d{4}-\\d{5}$"
+    },
+    "ui": {
+      "vehicleCardLinkName": "車両登録 オーナー登録・保証",
+      "inquiryCardLinkName": "お問い合わせ 製品やサービスについて",
+      "accountSettingsCardLinkName": "アカウント設定 登録情報の変更",
+      "memberPanelSettingsLinkName": "アカウント設定",
+      "vehiclePageHeading": "車両登録（オーナー登録）",
+      "inquiryPageHeading": "お問い合わせ",
+      "membershipNumberPrefix": "会員番号:"
+    }
+  },
+  "forgotPassword": {
+    "messages": {
+      "emailRequired": "メールアドレスを入力してください",
+      "emailInvalid": "メールアドレスの形式が正しくありません",
+      "resetAcknowledgement": "入力されたメールアドレスがアカウントに登録されている場合、まもなくパスワード再設定用リンクをお送りします"
+    },
+    "ui": {
+      "submitButton": "確認",
+      "backToLoginLink": "← ログイン画面に戻る",
+      "descriptionSnippet": "ご安心ください。パスワード再設定の手順をお送りします。"
+    }
+  },
+  "viewRegistration": {
+    "unregisteredSerialNumbers": [
+      "ARSP-06",
+      "ARSP-07",
+      "ARSP-08",
+      "ARSP-09",
+      "ARSP-10",
+      "ARSP-11",
+      "ARSP-12",
+      "ARSP-13",
+      "ARSP-14",
+      "ARSP-15",
+      "ARSP-16"
+    ],
+    "patterns": {
+      "deliveryDate": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "ownership": {
+      "currentOwner": "現オーナー",
+      "previousOwner": "過去オーナー"
+    },
+    "fields": {
+      "serialNumber": "車体番号",
+      "purchaseDate": "新車購入日（受渡日）",
+      "warrantyEnd": "保証期限"
+    },
+    "messages": {
+      "emptyState": "登録されている車両はありません",
+      "emptyStateHint": "購入した車両を登録して、メーカー保証を受けましょう"
+    },
+    "ui": {
+      "pageHeading": "車両登録（オーナー登録）",
+      "pageSubtitle": "購入した車両を登録して、メーカー保証やサポートを受けられます",
+      "warrantyBanner": "受渡日から1ヶ月以内の登録で保証期間が2年に延長されます",
+      "warrantyCallout": "車両の受渡日から30日以内にオーナー登録を行うと、メーカー保証期間が1年から2年に延長されます。",
+      "registeredTab": "登録済み車両",
+      "newRegistrationTab": "新規登録",
+      "newRegistrationHeading": "新規車両登録",
+      "registerNewVehicleWithList": "新しい車両を登録",
+      "registerNewVehicleEmpty": "車両を登録",
+      "returnToMyPage": "マイページに戻る",
+      "vinSearchLabel": "車両識別番号（VIN）"
+    }
+  },
+  "newVehicleRegistration": {
+    "unregisteredSerialNumbers": [
+    "PSA01-01",
+    "PSA01-02", 
+    "PSA01-03", 
+    "PSA01-04", 
+    "PSA01-05",
+    "PSA01-06", 
+    "PSA01-07", 
+    "PSA01-08", 
+    "PSA01-09",
+    "PSA01-10",
+    "PSA01-11",
+    "PSA01-12",
+    "PSA01-13",
+    "PSA01-14",
+    "PSA01-15",
+    "PSA01-16",
+    "PSA01-17",
+    "PSA01-18",
+    "PSA01-19",
+    "PSA01-20",
+    "PSA01-21",
+    "PSA01-22",
+    "PSA01-23",
+    "PSA01-24",
+    "PSA01-25",
+    "PSA01-26",
+    "PSA01-27",
+    "PSA01-28",
+    "PSA01-29",
+    "PSA01-30",
+    "PSA01-31",
+    "PSA01-32",
+    "PSA01-33",
+    "PSA01-34",
+    "PSA01-35",
+    "PSA01-36",
+    "PSA01-37",
+    "PSA01-38",
+    "PSA01-39",
+    "PSA01-40",
+    "PSA01-41",
+    "PSA01-42",
+    "PSA01-43"
+    ],
+    "accounts": {
+      "user1000": {
+        "registeredVin": "ARSP-02",
+        "setupVin": "ARSP-06"
+      },
+      "user1001": {
+        "registeredVin": "ARSP-03",
+        "setupVin": "ARSP-07",
+        "transferVin": "ARSP-02"
+      },
+      "user1002": {
+        "registeredVin": "ARSP-04",
+        "setupVin": "ARSP-08"
+      },
+      "user1003": {
+        "registeredVin": "ARSP-05",
+        "setupVin": "ARSP-09"
+      }
+    },
+    "invalidSerials": {
+      "notInCatalog": "NOT-IN-CATALOG-99999",
+      "partialPrefix": "PSA01",
+      "specialCharsOnly": "!@#$%^&*()",
+      "longInput": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "specialCharsHeavy": "ITLM-2025-TQ4-00456"
+    },
+    "expected": {
+      "brand": "Ara Brand",
+      "model": "Product 01",
+      "exactCaseSerial": "PSA01-01"
+    },
+    "warranty": {
+      "twoYearWithinWindowSerial": "PSA01-17",
+      "oneYearOutsideWindowSerial": "PSA01-18",
+      "boundarySerial": "PSA01-19",
+      "noDeliveryDateSerial": "PSA01-08"
+    },
+    "patterns": {
+      "validateApi": "/api/vehicles/validate",
+      "registerApi": "/api/vehicles",
+      "eligibilityDayCount": "受渡日から\\d+日",
+      "deliveryDateInResult": "受渡日:"
+    },
+    "messages": {
+      "vinRequired": "車体番号を入力してください",
+      "serialNotFound": "シリアル番号が見つかりません",
+      "noPurchaseInfoTitle": "購入情報が確認できません",
+      "oneYearWarrantyStandard": "標準の1年間メーカー保証が適用されます",
+      "alreadyRegisteredSelf": "この車両は既にあなたが登録済みです",
+      "alreadyRegisteredOther": "この車両は既に他の会員が登録しています",
+      "transferOwnershipNote": "登録すると、現在のオーナーは「過去オーナー」となり、あなたが「現オーナー」として登録されます。",
+      "twoYearWarrantyEligible": "2年間",
+      "oneYearWarrantyEligible": "1年間"
+    },
+    "ui": {
+      "searchButton": "検索",
+      "vinHelpText": "車両識別番号（VIN）は、フレーム下部のステッカーまたは保証書に記載されています。",
+      "newRegistrationIntro": "車両識別番号（VIN）を入力して車両を検索してください。",
+      "searchResultsHeading": "検索結果",
+      "registerThisVehicleButton": "この車両を登録する",
+      "confirmationHeading": "車両登録が完了しました",
+      "confirmationBody": "オーナー登録が正常に完了しました。",
+      "registeredVehicleLabel": "登録車両",
+      "oneYearWarrantyApplied": "1年間のメーカー保証が適用されました",
+      "oneYearWarrantyAppliedDetail": "購入情報が確認できないため、標準の1年間保証が適用されています",
+      "twoYearWarrantyApplied": "2年間のメーカー保証が適用されました",
+      "goToRegisteredListButton": "登録車両一覧へ",
+      "confirmationReturnToMyPage": "マイページへ戻る"
+    }
+  },
+  "vehicleRegistrationRegression": {
+    "vinPoolSource": "newVehicleRegistration.unregisteredSerialNumbers",
+    "accounts": {
+      "emptyList": "NO_VEHICLE_EMAIL",
+      "primary": "NEW_VEHICLE_EMAIL_1000",
+      "secondary": "NEW_VEHICLE_EMAIL_1001",
+      "transferOwner": "NEW_VEHICLE_EMAIL_1002",
+      "transferSecond": "NEW_VEHICLE_EMAIL_1003"
     }
   }
 }

@@ -14,6 +14,7 @@ export class LoginPage {
   readonly passwordError: Locator;
   readonly invalidCredentialsToast: Locator;
   readonly passwordVisibilityToggle: Locator;
+  readonly memberBenefitsHeading: Locator;
 
   constructor(page: Page) {
     this.page = page;

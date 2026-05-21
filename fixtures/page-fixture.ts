@@ -6,6 +6,8 @@ import { RegisterPage } from '../page-objects/Register.page';
 
 import { ChangePasswordPage } from '../page-objects/ChangePassword.page';
 import { AccountSettingsPage } from '../page-objects/AccountSettings.page';
+import { ViewRegistrationPage } from '../page-objects/ViewRegistration.page';
+import { NewVehicleRegistrationPage } from '../page-objects/NewVehicleRegistration.page';
 
 type MyFixtures = {
   loginPage: LoginPage;
@@ -14,6 +16,8 @@ type MyFixtures = {
   registerPage: RegisterPage;
   changePasswordPage: ChangePasswordPage;
   accountSettingsPage: AccountSettingsPage;
+  viewRegistrationPage: ViewRegistrationPage;
+  newVehicleRegistrationPage: NewVehicleRegistrationPage;
 };
 
 export const test = base.extend<MyFixtures>({
@@ -34,6 +38,12 @@ export const test = base.extend<MyFixtures>({
   },
   accountSettingsPage: async ({ page }, use) => {
     await use(new AccountSettingsPage(page));
+  },
+  viewRegistrationPage: async ({ page }, use) => {
+    await use(new ViewRegistrationPage(page));
+  },
+  newVehicleRegistrationPage: async ({ page }, use) => {
+    await use(new NewVehicleRegistrationPage(page));
   },
 });
 

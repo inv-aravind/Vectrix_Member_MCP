@@ -23,3 +23,16 @@ https://mobipark-members.innovaturelabs.net/
 | Password      | Password@123                                                      |
 
 ---
+
+# New Vehicle Registration Test Accounts
+
+| Account | Email |
+| ------- | ----- |
+| User 1000 | reacharavindh.s14+1000@gmail.com |
+| User 1001 | reacharavindh.s14+1001@gmail.com |
+| User 1002 | reacharavindh.s14+1002@gmail.com |
+| User 1003 | reacharavindh.s14+1003@gmail.com |
+
+Password for all: `Password@123`
+
+---
