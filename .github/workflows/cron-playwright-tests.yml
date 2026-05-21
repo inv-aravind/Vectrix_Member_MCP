@@ -1,7 +1,7 @@
 name: Scheduled Playwright Tests
 
 on:
-  schedule:
+  # schedule:
     # Daily at 02:00 UTC — adjust in CronJob/README.md
     # - cron: '0 2 * * *'
   workflow_dispatch:
