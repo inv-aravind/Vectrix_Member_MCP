@@ -217,7 +217,7 @@ After any test run, raw Allure data is written to `allure-results/`. Generate a 
 
 - TC_033 – requires known registration payload for the signed-in account
 
-### Dashboard (`tests/dashboard.spec.ts`)
+### Dashboard (`tests/dashboard.spec.ts`).
 
 | Module | Cases | Source |
 |--------|-------|--------|
