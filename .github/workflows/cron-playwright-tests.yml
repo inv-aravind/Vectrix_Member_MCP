@@ -16,10 +16,7 @@ on:
         default: test
         type: choice
         options:
-          - test
           - test:login
-          - test:registration
-          - test:change-password
 
 permissions:
   contents: read
