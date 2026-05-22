@@ -1,13 +1,10 @@
-name: Scheduled Playwright Tests
+name: Manual Playwright Tests
 
 on:
-  # schedule:
-    # Daily at 02:00 UTC — adjust in CronJob/README.md
-    # - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Git branch to run (latest commit). Leave empty to use CRON_TARGET_BRANCH or the selected workflow branch.'
+        description: ''
         required: false
         type: string
       test_command:
@@ -16,27 +13,18 @@ on:
         default: test
         type: choice
         options:
-          - test
           - test:login
-          - test:registration
-          - test:change-password
-  pull_request:
-    branches:
-      - master
-  push:
-    tags:
-      - playwright-run
 
 permissions:
   contents: read
 
 concurrency:
-  group: cron-playwright-${{ github.workflow }}-${{ github.event.inputs.branch || (github.event_name == 'pull_request' && github.head_ref) || vars.CRON_TARGET_BRANCH || github.ref_name }}
+  group: manual-playwright-${{ github.event.inputs.branch || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
   playwright:
-    name: Playwright (${{ github.event.inputs.branch || (github.event_name == 'pull_request' && github.head_ref) || vars.CRON_TARGET_BRANCH || github.ref_name }})
+    name: Playwright (${{ github.event.inputs.branch || github.ref_name }})
     runs-on: ubuntu-latest
     timeout-minutes: 180
 
@@ -45,17 +33,7 @@ jobs:
         id: target
         shell: bash
         run: |
-          if [ -n "${{ github.event.inputs.branch }}" ]; then
-            BRANCH="${{ github.event.inputs.branch }}"
-          elif [ "${{ github.event_name }}" = "pull_request" ]; then
-            BRANCH="${{ github.head_ref }}"
-          elif [ "${{ github.event_name }}" = "push" ] && [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            BRANCH="${{ github.sha }}"
-          elif [ -n "${{ vars.CRON_TARGET_BRANCH }}" ]; then
-            BRANCH="${{ vars.CRON_TARGET_BRANCH }}"
-          else
-            BRANCH="${{ github.ref_name }}"
-          fi
+          BRANCH="${{ github.event.inputs.branch || github.ref_name }}"
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
           echo "Running tests against branch: $BRANCH"
 
