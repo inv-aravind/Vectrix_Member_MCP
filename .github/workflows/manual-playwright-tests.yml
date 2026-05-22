@@ -10,7 +10,7 @@ on:
       test_command:
         description: 'npm script to run'
         required: false
-        default: test
+        default: test:login
         type: choice
         options:
           - test:login
