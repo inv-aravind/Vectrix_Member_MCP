@@ -1,0 +1,113 @@
+name: Scheduled Playwright Tests
+
+on:
+  # schedule:
+    # Daily at 02:00 UTC — adjust in CronJob/README.md
+    # - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Git branch to run (latest commit). Leave empty to use CRON_TARGET_BRANCH or the selected workflow branch.'
+        required: false
+        type: string
+      test_command:
+        description: 'npm script to run'
+        required: false
+        default: test
+        type: choice
+        options:
+          - test
+          - test:login
+          - test:registration
+          - test:change-password
+  pull_request:
+    branches:
+      - master
+  push:
+    tags:
+      - playwright-run
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cron-playwright-${{ github.workflow }}-${{ github.event.inputs.branch || (github.event_name == 'pull_request' && github.head_ref) || vars.CRON_TARGET_BRANCH || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright (${{ github.event.inputs.branch || (github.event_name == 'pull_request' && github.head_ref) || vars.CRON_TARGET_BRANCH || github.ref_name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Resolve target branch
+        id: target
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.branch }}" ]; then
+            BRANCH="${{ github.event.inputs.branch }}"
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            BRANCH="${{ github.head_ref }}"
+          elif [ "${{ github.event_name }}" = "push" ] && [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            BRANCH="${{ github.sha }}"
+          elif [ -n "${{ vars.CRON_TARGET_BRANCH }}" ]; then
+            BRANCH="${{ vars.CRON_TARGET_BRANCH }}"
+          else
+            BRANCH="${{ github.ref_name }}"
+          fi
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "Running tests against branch: $BRANCH"
+
+      - name: Checkout latest code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.target.outputs.branch }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Run Playwright tests
+        env:
+          CI: true
+        run: npm run ${{ github.event.inputs.test_command || 'test' }}
+
+      - name: Generate Allure report
+        if: always()
+        run: npm run allure:generate
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          path: allure-report/
+          retention-days: 14
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          path: |
+            test-results/
+            allure-results/
+          retention-days: 14

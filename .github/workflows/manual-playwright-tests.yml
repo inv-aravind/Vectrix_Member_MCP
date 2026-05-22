@@ -1,0 +1,91 @@
+name: Manual Playwright Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: ''
+        required: false
+        type: string
+      test_command:
+        description: 'npm script to run'
+        required: false
+        default: test:login
+        type: choice
+        options:
+          - test:login
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-playwright-${{ github.event.inputs.branch || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright (${{ github.event.inputs.branch || github.ref_name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Resolve target branch
+        id: target
+        shell: bash
+        run: |
+          BRANCH="${{ github.event.inputs.branch || github.ref_name }}"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "Running tests against branch: $BRANCH"
+
+      - name: Checkout latest code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.target.outputs.branch }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Run Playwright tests
+        env:
+          CI: true
+        run: npm run ${{ github.event.inputs.test_command || 'test' }}
+
+      - name: Generate Allure report
+        if: always()
+        run: npm run allure:generate
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          path: allure-report/
+          retention-days: 14
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          path: |
+            test-results/
+            allure-results/
+          retention-days: 14
