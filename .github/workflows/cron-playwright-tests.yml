@@ -28,7 +28,7 @@ on:
       - playwright-run
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: cron-playwright-${{ github.workflow }}-${{ github.event.inputs.branch || (github.event_name == 'pull_request' && github.head_ref) || vars.CRON_TARGET_BRANCH || github.ref_name }}
@@ -56,7 +56,9 @@ jobs:
           else
             BRANCH="${{ github.ref_name }}"
           fi
+          BRANCH_SLUG=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9._-]/-/g')
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "branch_slug=$BRANCH_SLUG" >> "$GITHUB_OUTPUT"
           echo "Running tests against branch: $BRANCH"
 
       - name: Checkout latest code
@@ -86,28 +88,35 @@ jobs:
         if: always()
         run: npm run allure:generate
 
+      - name: Prepare Allure GitHub Pages deploy
+        id: pages
+        if: always()
+        run: bash .github/scripts/publish-allure-pages.sh "${{ github.run_number }}" "${{ steps.target.outputs.branch_slug }}" "${{ steps.target.outputs.branch }}" "${{ github.repository }}"
+
+      - name: Deploy Allure to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: gh-pages-content
+          keep_files: false
+
+      - name: Notify webhook
+        if: always() && steps.pages.outputs.report_url != ''
+        run: bash .github/scripts/notify-webhook.sh "${{ steps.pages.outputs.report_url }}" "${{ steps.pages.outputs.expires_at_iso }}" "${{ github.run_number }}" "${{ steps.target.outputs.branch }}" "${{ github.workflow }}" "${{ job.status }}" "${{ github.event.inputs.test_command || 'test' }}"
+
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-${{ steps.target.outputs.branch }}-${{ github.run_number }}
+          name: playwright-report-${{ steps.target.outputs.branch_slug }}-${{ github.run_number }}
           path: playwright-report/
-          retention-days: 14
-
-      - name: Upload Allure report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report-${{ steps.target.outputs.branch }}-${{ github.run_number }}
-          path: allure-report/
-          retention-days: 14
+          retention-days: 1
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ steps.target.outputs.branch }}-${{ github.run_number }}
-          path: |
-            test-results/
-            allure-results/
-          retention-days: 14
+          name: test-results-${{ steps.target.outputs.branch_slug }}-${{ github.run_number }}
+          path: test-results/
+          retention-days: 1
